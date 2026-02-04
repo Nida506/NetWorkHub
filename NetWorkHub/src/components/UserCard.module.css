@@ -1,0 +1,12 @@
+.h2:focus {
+  caret-color: transparent;
+}
+.cardSetting {
+  height: fit-content;
+  width: 19rem;
+}
+
+.imgSetting {
+  height: 26rem;
+  width: 19rem;
+}

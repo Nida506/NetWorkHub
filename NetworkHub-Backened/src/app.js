@@ -1,0 +1,55 @@
+//create express server
+require("dotenv").config();
+
+const express = require("express");
+const app = express();
+const { connectDb } = require("./config/database");
+const cookieParser = require("cookie-parser");
+// for chat
+const http = require("http");
+const initializeSocket = require("./utils/socket");
+
+// routes import
+const { authRouter } = require("./routes/auth");
+const { profileRouter } = require("./routes/profile");
+const { requestRouter } = require("./routes/request");
+const { userRouter } = require("./routes/user");
+const chatRouter = require("./routes/chat");
+
+const cors = require("cors");
+const paymentRouter = require("./routes/payment");
+require("./utils/cronjob");
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"], // Allow GET method explicitly
+    allowedHeaders: ["Content-Type", "Authorization"], // Ensure necessary headers are allowed
+  })
+);
+
+app.use(express.json());
+app.use(cookieParser());
+
+app.use("/", authRouter);
+app.use("/", profileRouter);
+app.use("/", requestRouter);
+app.use("/", userRouter);
+app.use("/", paymentRouter);
+app.use("/", chatRouter);
+// for chat
+
+// create server and send to socket
+const server = http.createServer(app);
+initializeSocket(server);
+
+connectDb()
+  .then(() => {
+    console.log("Connection with database is established");
+    server.listen(process.env.PORT, () => {
+      console.log("Server is listening on port 8213");
+    });
+  })
+  .catch((error) => {
+    console.log(error);
+  });

@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ... */
+
+.backgroundImage {
+  background-image: url("/backgroundImage.png");
+  background-position: center;
+  background-size: cover;
+}
+
+.navHeight {
+  height: 10vh;
+}
+.height {
+  height: 90vh;
+  overflow: hidden;
+}
+@layer base {
+  :root {
+    --radius: 0.5rem;
+  }
+}
